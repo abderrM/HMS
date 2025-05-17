@@ -19,10 +19,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from home import views
 
+
+   
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('home.urls')),
+     path('accounts/', include('allauth.urls')),
+    path('auth/', include('allauth.socialaccount.urls')),
     path('mes-reservations/', views.user_bookings, name='user_bookings'),
     path('cancel-booking/<str:booking_uid>/', views.cancel_booking, name='cancel_booking'),
     path('update-booking/<str:booking_uid>/', views.update_booking, name='update_booking'),
