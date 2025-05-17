@@ -15,7 +15,6 @@ from django.contrib.messages import constants as messages
 import os
 from dotenv import load_dotenv
 import pymysql
-import dj_database_url
 
 pymysql.install_as_MySQLdb()
     
@@ -97,9 +96,10 @@ WSGI_APPLICATION = 'hotelProject.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
