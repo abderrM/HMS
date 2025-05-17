@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-^0-yjpszv%e#3kfto&a6l+n1yz5*_mo@9$%h^kqc0vx7qms#h8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://hotelia.up.railway.app/']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -290,8 +290,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
-            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
+            'client_id': '864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
         },
         'SCOPE': [
