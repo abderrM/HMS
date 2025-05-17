@@ -338,3 +338,7 @@ STRIPE_CURRENCY = 'eur'  # or 'usd' depending on your preference
 # Configuration de allauth (mise à jour)
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*','password2*']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
