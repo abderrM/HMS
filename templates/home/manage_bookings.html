@@ -1,0 +1,193 @@
+{% extends 'home/base.html' %}
+{% block title %}Gestion des Réservations{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Gestion des Réservations</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Statut</label>
+                    <select name="status" class="form-select">
+                        <option value="">Tous</option>
+                        {% for status, label in status_choices %}
+                        <option value="{{ status }}" {% if status == current_status %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Type de réservation</label>
+                    <select name="booking_type" class="form-select">
+                        <option value="">Tous</option>
+                        {% for value, label in booking_type_choices %}
+                        <option value="{{ value }}" {% if value == current_booking_type %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5 class="mb-0">Liste des réservations</h5>
+                    </div>
+                    <div class="col-auto">
+                        <select name="action" class="form-select form-select-sm" required>
+                            <option value="">Action groupée</option>
+                            <option value="confirm">Confirmer les réservations</option>
+                            <option value="complete">Marquer comme payées</option>
+                            <option value="cancel">Annuler les réservations</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm">Appliquer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Client</th>
+                                <th>Hôtel</th>
+                                <th>Dates</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="selected_bookings" value="{{ booking.uid }}">
+                                </td>
+                                <td>{{ booking.user.email }}</td>
+                                <td>{{ booking.hotel.hotel_name }}</td>
+                                <td>
+                                    Du {{ booking.start_date|date:"d/m/Y" }}<br>
+                                    Au {{ booking.end_date|date:"d/m/Y" }}
+                                </td>
+                                <td>$. {{ booking.total_amount }}</td>
+                                <td>
+                                    <span class="badge {% if booking.status == 'completed' %}bg-success
+                                                 {% elif booking.status == 'confirmed' %}bg-primary
+                                                 {% elif booking.status == 'pending' %}bg-warning
+                                                 {% else %}bg-danger{% endif %}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{% url 'booking_detail' booking.uid %}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% if booking.status == 'pending' %}
+                                        <button type="button" class="btn btn-sm btn-success" onclick="updateStatus('{{ booking.uid }}', 'confirmed')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+document.getElementById('select-all').addEventListener('change', function() {
+    document.querySelectorAll('input[name="selected_bookings"]')
+        .forEach(cb => cb.checked = this.checked);
+});
+
+function updateStatus(bookingId, status) {
+    if (confirm('Êtes-vous sûr de vouloir modifier le statut de cette réservation ?')) {
+        const formData = new FormData();
+        formData.append('status', status);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+        fetch(`/update-booking-status/${bookingId}/`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error || 'Une erreur est survenue');
+            }
+        })
+        .catch(error => {
+            alert('Erreur lors de la mise à jour du statut');
+        });
+    }
+}
+
+// Gestion des actions groupées
+document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const action = document.querySelector('select[name="action"]').value;
+    if (!action) {
+        alert('Veuillez sélectionner une action');
+        return;
+    }
+
+    const selectedBookings = Array.from(document.querySelectorAll('input[name="selected_bookings"]:checked'))
+        .map(cb => cb.value);
+
+    if (selectedBookings.length === 0) {
+        alert('Veuillez sélectionner au moins une réservation');
+        return;
+    }
+
+    const statusMap = {
+        'confirm': 'confirmed',
+        'complete': 'completed',
+        'cancel': 'cancelled'
+    };
+
+    const status = statusMap[action];
+    if (!status) return;
+
+    if (confirm(`Êtes-vous sûr de vouloir ${action} les réservations sélectionnées ?`)) {
+        Promise.all(selectedBookings.map(bookingId => 
+            fetch(`/update-booking-status/${bookingId}/`, {
+                method: 'POST',
+                body: new FormData(Object.assign(document.createElement('form'), {
+                    method: 'POST',
+                    innerHTML: `
+                        <input name="csrfmiddlewaretoken" value="${document.querySelector('[name=csrfmiddlewaretoken]').value}">
+                        <input name="status" value="${status}">
+                    `
+                }))
+            }).then(response => response.json())
+        ))
+        .then(() => location.reload())
+        .catch(() => alert('Une erreur est survenue'));
+    }
+});
+</script>
+{% endblock %} 

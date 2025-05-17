@@ -1,0 +1,218 @@
+{% extends 'home/base.html' %}
+{% load booking_tags %}
+{% block title %}Paiement - {{ booking.hotel.hotel_name }}{% endblock %}
+
+{% block css %}
+<style>
+.payment-option {
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+    border-color: #0d6efd;
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.payment-option.selected {
+    border-color: #198754;
+    background-color: #f8fff9;
+}
+
+.payment-logo {
+    font-size: 2rem;
+    margin-left: 15px;
+}
+
+.payment-logo.paypal {
+    color: #003087;
+}
+
+.payment-logo.mastercard {
+    color: #eb001b;
+}
+
+.payment-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.booking-summary {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.total-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.price-details {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+.secure-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.secure-badge i {
+    margin-right: 5px;
+    color: #1a365d;
+}
+
+/* Ajout : style du bouton paiement */
+.btn-primary, .btn-primary:active, .btn-primary:focus {
+    background: #1a365d !important;
+    color: #c9a769 !important;
+    border: none !important;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.btn-primary:hover {
+    background: #12294a !important;
+    color: #c9a769 !important;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Choisissez votre méthode de paiement</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="payment-option" onclick="selectPaymentMethod('paypal')">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="payment-title">
+                            <i class="fab fa-paypal text-primary"></i> PayPal
+                        </h3>
+                        <p class="mb-0">Paiement sécurisé via votre compte PayPal</p>
+                    </div>
+                    <i class="fab fa-paypal payment-logo paypal"></i>
+                </div>
+            </div>
+
+            <div class="payment-option" onclick="selectPaymentMethod('mastercard')">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="payment-title">
+                            <i class="fas fa-credit-card text-danger"></i> Carte bancaire
+                        </h3>
+                        <p class="mb-0">Paiement sécurisé par carte via Stripe</p>
+                    </div>
+                    <i class="fab fa-cc-mastercard payment-logo mastercard"></i>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <span class="secure-badge">
+                    <i class="fas fa-lock"></i> Paiement 100% sécurisé
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="booking-summary">
+                <h4>Résumé de la réservation</h4>
+                <hr>
+                <p><strong>Hôtel:</strong> {{ booking.hotel.hotel_name }}</p>
+                <p><strong>Dates:</strong><br>
+                    Du {{ booking.start_date|date:"d/m/Y" }}<br>
+                    Au {{ booking.end_date|date:"d/m/Y" }}
+                </p>
+                <hr>
+                <div class="price-details">
+                    <p class="mb-1">Prix par nuit: $. {{ price_per_night }}</p>
+                    <p class="mb-1">Nombre de nuits: {{ days }}</p>
+                    <p class="mb-2">Calcul: {{ price_per_night }} × {{ days }} nuits</p>
+                </div>
+                <p class="total-amount">Total: $. {{ booking.total_amount|floatformat:2 }}</p>
+                <button id="payButton" class="btn btn-primary w-100 mt-3" disabled>
+                    Procéder au paiement
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=INR"></script>
+<!-- Stripe SDK -->
+<script src="https://js.stripe.com/v3/"></script>
+
+{% endblock %}
+
+{% block js %}
+<script>
+let selectedMethod = null;
+const stripe = Stripe('{{ stripe_public_key }}');
+const payButton = document.getElementById('payButton');
+
+function selectPaymentMethod(method) {
+    selectedMethod = method;
+    
+    // Update UI
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+    
+    // Enable pay button
+    payButton.disabled = false;
+    payButton.textContent = `Payer avec ${method === 'paypal' ? 'PayPal' : 'carte bancaire'}`;
+}
+
+payButton.addEventListener('click', async () => {
+    if (!selectedMethod) return;
+    
+    payButton.disabled = true;
+    payButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement en cours...';
+    
+    try {
+        if (selectedMethod === 'paypal') {
+            const response = await fetch(`/create-paypal-order/{{ booking.uid }}/`);
+            const data = await response.json();
+            if (data.approval_url) {
+                window.location.href = data.approval_url;
+            } else {
+                throw new Error(data.error || 'Une erreur est survenue');
+            }
+        } else {
+            const response = await fetch(`/create-stripe-session/{{ booking.uid }}/`);
+            const data = await response.json();
+            if (data.session_id) {
+                const result = await stripe.redirectToCheckout({
+                    sessionId: data.session_id
+                });
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+            } else {
+                throw new Error(data.error || 'Une erreur est survenue');
+            }
+        }
+    } catch (error) {
+        alert(error.message);
+        payButton.disabled = false;
+        payButton.textContent = `Payer avec ${selectedMethod === 'paypal' ? 'PayPal' : 'carte bancaire'}`;
+    }
+});
+</script>
+{% endblock %} 

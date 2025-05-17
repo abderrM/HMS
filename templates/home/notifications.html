@@ -1,0 +1,299 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Notifications - Hotelia{% endblock %}
+
+{% block css %}
+<style>
+    /* Notifications Page Styles */
+    .notification-item {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: white;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .notification-item.unread {
+        border-left-color: var(--gold-color);
+        background-color: rgba(201, 167, 105, 0.05);
+    }
+
+    .notification-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .notification-icon.booking {
+        background-color: #e3f2fd;
+        color: #1a365d !important;
+    }
+
+    .notification-icon.room {
+        background-color: #e8f5e9;
+        color: #198754;
+    }
+
+    .notification-icon.general {
+        background-color: #fff3e0;
+        color: #fd7e14;
+    }
+
+    .notification-icon.unavailable {
+        background-color: #f8d7da;
+        color: #dc3545;
+    }
+
+    .notification-time {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .notification-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .empty-notifications {
+        text-align: center;
+        padding: 40px;
+        color: #6c757d;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        margin-top: 20px;
+    }
+
+    .empty-notifications i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #dee2e6;
+    }
+
+    /* Header Styles */
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .notification-header h2 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 600;
+        margin: 0;
+    }
+
+    /* Main Container */
+    .notifications-container {
+        padding: 60px 0;
+        background-color: var(--light-gray);
+        min-height: calc(100vh - 80px);
+    }
+
+    /* Luxury Footer (same as contact page) */
+    .luxury-footer {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 40px 0 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .luxury-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/footer-pattern.png" %}') repeat;
+        opacity: 0.05;
+    }
+
+    .footer-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gold-color);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .footer-slogan {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+
+    .copyright {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .notification-item {
+            padding: 12px;
+        }
+        
+        .notification-icon {
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+        }
+        
+        .notification-actions {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .empty-notifications {
+            padding: 30px 20px;
+        }
+
+        .notifications-container {
+            padding: 40px 0;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .notification-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .notification-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .empty-notifications i {
+            font-size: 2.5rem;
+        }
+
+        .luxury-footer {
+            padding: 30px 0 15px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+        }
+    }
+
+    .btn-primary, .btn-outline-primary {
+        background: #1a365d !important;
+        color: #fff !important;
+        border-color: #1a365d !important;
+    }
+
+    .btn-primary:hover, .btn-outline-primary:hover {
+        background: #12294a !important;
+        color: #fff !important;
+        border-color: #12294a !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content Section -->
+<section class="notifications-container">
+    <div class="container">
+        <div class="notification-header">
+            <h2><i class="fas fa-bell me-2"></i>Notifications</h2>
+            {% if unread_count > 0 %}
+            <a href="{% url 'mark_all_notifications_as_read' %}" class="btn btn-primary">
+                <i class="fas fa-check-double me-2"></i>Marquer tout comme lu
+            </a>
+            {% endif %}
+        </div>
+
+        {% if notifications %}
+            <div class="list-group">
+                {% for notification in notifications %}
+                    <div class="notification-item {% if not notification.is_read %}unread{% endif %}">
+                        <div class="d-flex">
+                            <div class="notification-icon 
+                                {% if notification.notification_type == 'booking_status' %}booking
+                                {% elif notification.notification_type == 'room_available' %}room
+                                {% elif notification.notification_type == 'room_not_available' %}unavailable
+                                {% else %}general{% endif %}">
+                                
+                                <i class="fas 
+                                    {% if notification.notification_type == 'booking_status' %}fa-calendar-check
+                                    {% elif notification.notification_type == 'room_available' %}fa-bed
+                                    {% elif notification.notification_type == 'room_not_available' %}fa-door-closed
+                                    {% else %}fa-info-circle{% endif %}">
+                                </i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h5 class="mb-1">{{ notification.title }}</h5>
+                                    <small class="notification-time">{{ notification.created_at|timesince }}</small>
+                                </div>
+                                <p class="mb-1">{{ notification.message }}</p>
+                                <div class="notification-actions">
+                                    {% if not notification.is_read %}
+                                        <a href="{% url 'mark_notification_as_read' notification.id %}" class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="fas fa-check me-1"></i>Marquer comme lu
+                                        </a>
+                                    {% endif %}
+                                    {% if notification.booking %}
+                                        <a href="{% url 'booking_detail' notification.booking.uid %}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-eye me-1"></i>Voir la réservation
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <h4>Aucune notification</h4>
+                <p>Vous n'avez pas encore de notifications.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Luxury Footer (same as contact page) -->
+<footer class="luxury-footer">
+    <div class="container">
+        <div class="footer-content">
+            <span class="footer-logo">Hotelia</span>
+            <p class="footer-slogan">Curating exceptional stays for those who appreciate the finer things in life.</p>
+            <p class="copyright">© 2025 Hotelia. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}

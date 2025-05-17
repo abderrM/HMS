@@ -14,17 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from . views import *
+from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from hotelProject import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('signin/', signin, name='signin'),
-    path('signup/', signup, name='signup'),
-    path('signout/', signout, name='signout'),
-    path('hotel/<uid>',get_hotel,name='get_hotel'),
+    path('', views.index, name='index'),
+    path('signout/', views.signout, name='signout'),
+    path('hotel/<str:hotel_uid>/', views.hotel_detail, name='hotel_detail'),
+    path('aboutus/', views.aboutus, name='aboutus'),
+    path('contactus/', views.contactus, name='contactus'),
+    path('booking/<str:hotel_uid>/', views.booking, name='booking'),
+    path('booking-detail/<str:booking_uid>/', views.booking_detail, name='booking_detail'),
+    path('notifications/', views.notifications, name='notifications'),
+    path('notifications/mark-read/<int:notification_id>/', views.mark_notification_as_read, name='mark_notification_as_read'),
+    path('notifications/mark-all-read/', views.mark_all_notifications_as_read, name='mark_all_notifications_as_read'),
+    path('manage-bookings/', views.manage_bookings, name='manage_bookings'),
 ]
 
 if settings.DEBUG:

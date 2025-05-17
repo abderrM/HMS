@@ -1,0 +1,491 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Détails de la réservation - Hotelia{% endblock %}
+
+{% block css %}
+<style>
+    /* Booking Details Page Styles */
+    .booking-details-container {
+        padding: 60px 0;
+        background-color: var(--light-gray);
+        min-height: calc(100vh - 80px);
+    }
+
+    .booking-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .booking-card-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 20px;
+        border-bottom: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .booking-card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/footer-pattern.png" %}') repeat;
+        opacity: 0.1;
+    }
+
+    .booking-card-header h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 600;
+        position: relative;
+        margin: 0;
+    }
+
+    .booking-card-body {
+        padding: 30px;
+        background-color: white;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 2px;
+        background: var(--gold-color);
+        margin-top: 10px;
+    }
+
+    .info-item {
+        margin-bottom: 15px;
+    }
+
+    .info-item strong {
+        color: var(--primary-color);
+        min-width: 150px;
+        display: inline-block;
+    }
+
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .verification-status {
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid transparent;
+    }
+
+    .verification-status.verified {
+        background-color: rgba(40, 167, 69, 0.1);
+        border-left-color: #28a745;
+    }
+
+    .verification-status.pending {
+        background-color: rgba(255, 193, 7, 0.1);
+        border-left-color: #ffc107;
+    }
+
+    .payment-section {
+        padding: 25px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid rgba(0,0,0,0.05);
+        margin-top: 20px;
+    }
+
+    .payment-method-card {
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .payment-method-card:hover {
+        border-color: var(--gold-color);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .payment-method-card.active {
+        border-color: var(--gold-color);
+        background-color: rgba(201, 167, 105, 0.05);
+    }
+
+    .payment-icon {
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .btn-payment {
+        background-color: var(--gold-color);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-payment:hover {
+        background-color: var(--gold-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(201, 167, 105, 0.3);
+    }
+
+    .btn-back {
+        background-color: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-cancel {
+        background-color: white;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Alert Styles */
+    .custom-alert {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid;
+    }
+
+    .alert-info {
+        background-color: rgba(23, 162, 184, 0.1);
+        border-left-color: #17a2b8;
+    }
+
+    .alert-warning {
+        background-color: rgba(255, 193, 7, 0.1);
+        border-left-color: #ffc107;
+    }
+
+    .alert-success {
+        background-color: rgba(40, 167, 69, 0.1);
+        border-left-color: #28a745;
+    }
+
+    /* Luxury Footer (same as contact page) */
+    .luxury-footer {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 40px 0 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .luxury-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/footer-pattern.png" %}') repeat;
+        opacity: 0.05;
+    }
+
+    .footer-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gold-color);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .footer-slogan {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+
+    .copyright {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .booking-card-body {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .info-item strong {
+            min-width: 120px;
+        }
+
+        .luxury-footer {
+            padding: 30px 0 15px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .booking-details-container {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+        }
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Booking Details Section -->
+<section class="booking-details-container">
+    <div class="container">
+        <div class="booking-card">
+            <div class="booking-card-header">
+                <h3><i class="fas fa-calendar-check me-2"></i>Détails de la réservation</h3>
+            </div>
+            <div class="booking-card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="section-title">
+                            <h4>Informations de l'hôtel</h4>
+                        </div>
+                        <div class="info-item">
+                            <strong>Nom de l'hôtel:</strong> {{ booking.hotel.hotel_name }}
+                        </div>
+                        <div class="info-item">
+                            <strong>Prix par nuit:</strong> $. {{ booking.hotel.hotel_price }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="section-title">
+                            <h4>Informations de réservation</h4>
+                        </div>
+                        <div class="info-item">
+                            <strong>Date d'arrivée:</strong> {{ booking.start_date }}
+                        </div>
+                        <div class="info-item">
+                            <strong>Date de départ:</strong> {{ booking.end_date }}
+                        </div>
+                        <div class="info-item">
+                            <strong>Statut:</strong> 
+                            <span class="status-badge 
+                                {% if booking.status == 'confirmed' %}bg-success
+                                {% elif booking.status == 'pending' %}bg-warning
+                                {% elif booking.status == 'cancelled' %}bg-danger
+                                {% else %}bg-info{% endif %}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="section-title">
+                            <h4>Statut de vérification</h4>
+                        </div>
+                        <div class="verification-status {% if booking.room_verified %}verified{% else %}pending{% endif %}">
+                            <div class="info-item">
+                                <strong>Chambre vérifiée:</strong> 
+                                {% if booking.room_verified %}
+                                    <span class="text-success"><i class="fas fa-check-circle"></i> Oui</span>
+                                {% else %}
+                                    <span class="text-warning"><i class="fas fa-clock"></i> En attente</span>
+                                {% endif %}
+                            </div>
+                            {% if booking.verified_by %}
+                            <div class="info-item">
+                                <strong>Vérifié par:</strong> {{ booking.verified_by.get_full_name|default:booking.verified_by.username }}
+                            </div>
+                            <div class="info-item">
+                                <strong>Date de vérification:</strong> {{ booking.verification_date }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if booking.room_verified and booking.status == 'confirmed' %}
+                <div class="payment-section">
+                    <div class="section-title">
+                        <h4><i class="fas fa-credit-card me-2"></i>Informations de paiement</h4>
+                    </div>
+                    {% if booking.payment_status == 'completed' %}
+                        <div class="custom-alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i> Paiement effectué avec succès
+                        </div>
+                        <div class="info-item">
+                            <strong>Méthode de paiement:</strong> 
+                            {% if booking.payment_method == 'paypal' %}
+                                <i class="fab fa-paypal payment-icon"></i> PayPal
+                            {% elif booking.payment_method == 'mastercard' %}
+                                <i class="fab fa-cc-mastercard payment-icon"></i> Mastercard
+                            {% endif %}
+                        </div>
+                        <div class="info-item">
+                            <strong>Montant total:</strong> $. {{ booking.total_amount }}
+                        </div>
+                        <div class="info-item">
+                            <strong>ID de transaction:</strong> {{ booking.transaction_id }}
+                        </div>
+                    {% else %}
+                        <div class="custom-alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> Votre réservation a été vérifiée. Veuillez procéder au paiement.
+                        </div>
+                        <div class="payment-methods mt-4">
+                            <h5 class="mb-3">Choisissez votre méthode de paiement:</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="payment-method-card" onclick="selectPaymentMethod('paypal')">
+                                        <input type="radio" name="payment_method" value="paypal" id="paypal" class="me-2">
+                                        <label for="paypal">
+                                            <i class="fab fa-paypal payment-icon"></i> PayPal
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="payment-method-card" onclick="selectPaymentMethod('mastercard')">
+                                        <input type="radio" name="payment_method" value="mastercard" id="mastercard" class="me-2">
+                                        <label for="mastercard">
+                                            <i class="fab fa-cc-mastercard payment-icon"></i> Mastercard
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-item mt-3">
+                                <strong>Montant à payer:</strong> $. {{ booking.total_amount }}
+                            </div>
+                            <a href="{% url 'process_payment' booking.uid %}" class="btn btn-payment mt-3" id="payment-btn" disabled>
+                                <i class="fas fa-lock me-2"></i> Procéder au paiement
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                {% elif not booking.room_verified %}
+                <div class="custom-alert alert-info mt-4">
+                    <i class="fas fa-info-circle me-2"></i> La section de paiement sera disponible une fois que votre réservation aura été vérifiée par notre équipe.
+                </div>
+                {% elif booking.status == 'pending' %}
+                <div class="custom-alert alert-warning mt-4">
+                    <i class="fas fa-clock me-2"></i> Votre réservation est en attente de confirmation. Vous pourrez procéder au paiement une fois qu'elle sera confirmée.
+                </div>
+                {% endif %}
+
+                <div class="mt-4">
+                    <a href="/" class="btn btn-back me-2">
+                        <i class="fas fa-home me-2"></i> Retour à l'accueil
+                    </a>
+                    {% if booking.status == 'pending' and not booking.room_verified %}
+                    <button class="btn btn-cancel" onclick="cancelBooking()">
+                        <i class="fas fa-times me-2"></i> Annuler la réservation
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Luxury Footer (same as contact page) -->
+<footer class="luxury-footer">
+    <div class="container">
+        <div class="footer-content">
+            <span class="footer-logo">Hotelia</span>
+            <p class="footer-slogan">Curating exceptional stays for those who appreciate the finer things in life.</p>
+            <p class="copyright">© 2025 Hotelia. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block js %}
+<script>
+function cancelBooking() {
+    if (confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')) {
+        fetch(`/cancel-booking/{{ booking.uid }}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert(data.error || 'Une erreur est survenue');
+            }
+        });
+    }
+}
+
+function selectPaymentMethod(method) {
+    document.querySelector(`input[value="${method}"]`).checked = true;
+    document.querySelectorAll('.payment-method-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    document.querySelector(`input[value="${method}"]`).closest('.payment-method-card').classList.add('active');
+    document.getElementById('payment-btn').disabled = false;
+}
+</script>
+{% endblock %}

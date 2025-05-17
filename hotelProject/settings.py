@@ -12,10 +12,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import os
+from dotenv import load_dotenv
+import pymysql
+import dj_database_url
 
-
-
-
+pymysql.install_as_MySQLdb()
+    
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,32 +40,43 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'home'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'hotelProject.urls'
+
+import os
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'home' / 'templates',  # Add app-level templates directory
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'home.context_processors.unread_notifications',
             ],
         },
     },
@@ -81,10 +97,9 @@ WSGI_APPLICATION = 'hotelProject.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}'
+    )
 }
 
 
@@ -122,8 +137,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -138,7 +160,181 @@ MESSAGE_TAGS = {
 }
 
 #static settings
-STATIC_ROOT = BASE_DIR / 'static'
-
 MEDIA_ROOT=BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+# Admin Tools Settings
+ADMIN_TOOLS_INDEX_DASHBOARD = 'admin_tools.dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'admin_tools.dashboard.CustomAppIndexDashboard'
+ADMIN_TOOLS_MENU = 'admin_tools.menu.CustomMenu'
+
+# Jazzmin Settings
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Hôtelia Administration",
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Hôtelia",
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Hôtelia",
+    # Welcome text on the login screen
+    "welcome_sign": "Bienvenue dans le panneau d'administration Hôtelia",
+    # Copyright on the footer
+    "copyright": "Hôtelia Administration",
+    # The model admin to search from the search bar
+    "search_model": "auth.User",
+    # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
+    "user_avatar": None,
+    # Whether to display the side menu
+    "show_sidebar": True,
+    # Whether to aut expand the menu
+    "navigation_expanded": True,
+    # Custom icons for side menu apps/models
+    "icons": {
+        "auth.user": "fas fa-user",
+        "home.Hotel": "fas fa-hotel",
+        "home.HotelBooking": "fas fa-calendar-check",
+        "home.HotelImages": "fas fa-images",
+    },
+    # Icons that are used when one is not manually specified
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    # Custom links to append to app groups, keyed on app name
+    "custom_links": {
+        "home": [{
+            "name": "Dashboard",
+            "url": "admin:index",
+            "icon": "fas fa-chart-line",
+            "permissions": ["auth.view_user"]
+        }]
+    },
+    # Custom menu
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+        {"app": "home"},
+    ],
+    # Custom menu ordering
+    "order_with_respect_to": ["auth", "home"],
+    # Custom menu items
+    "menu_items": [
+        {
+            "name": "Dashboard",
+            "icon": "fas fa-tachometer-alt",
+            "url": "admin:index",
+            "permissions": ["auth.view_user"]
+        },
+        {
+            "name": "Gestion des Hôtels",
+            "icon": "fas fa-hotel",
+            "models": [
+                {
+                    "name": "Ajouter Hôtel",
+                    "icon": "fas fa-plus",
+                    "url": "admin:home_hotel_add",
+                },
+                {
+                    "name": "Liste des Hôtels",
+                    "icon": "fas fa-list",
+                    "url": "admin:home_hotel_changelist",
+                },
+            ]
+        },
+        {
+            "name": "Gestion des Réservations",
+            "icon": "fas fa-calendar-check",
+            "url": "admin:home_hotelbooking_changelist",
+        },
+        {
+            "name": "Gestion des Utilisateurs",
+            "icon": "fas fa-users",
+            "url": "admin:auth_user_changelist",
+        },
+        {
+            "name": "Actions Récentes",
+            "icon": "fas fa-history",
+            "url": "admin:admin_logentry_changelist",
+        },
+    ],
+    # Custom CSS
+    "custom_css": "admin/css/custom.css",
+    # Custom JS
+    "custom_js": None,
+    # Whether to show the UI customizer on the sidebar
+    "show_ui_builder": True,
+    # Hide these models from admin panel
+    "hide_models": [
+        "auth.group",
+        "sites.site",
+        "socialaccount.socialaccount",
+        "socialaccount.socialtoken",
+        "socialaccount.socialapp",
+        "home.amenities",
+        "home.hotelimages",
+    ],
+}
+
+# Authentication settings
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+
+# Session settings
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+# AllAuth settings
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_SIGNUP = True  # Added to enable automatic user creation
+SOCIALACCOUNT_STORE_TOKENS = True  # Added to store authentication tokens
+
+# Email settings (update these with your email settings)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+
+# Payment Settings
+PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.getenv('PAYPAL_CLIENT_SECRET')
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+# Currency configuration
+STRIPE_CURRENCY = 'eur'  # or 'usd' depending on your preference
+
+# Configuration de allauth (mise à jour)
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*','password2*']

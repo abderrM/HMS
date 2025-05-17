@@ -1,0 +1,476 @@
+{% extends 'home/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}Contactez-nous - Hotelia{% endblock %}
+
+{% block css %}
+<style>
+    /* Hero Section - Style Luxe */
+    .hero-contact {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: var(--gold-color);
+        padding: 120px 0 80px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin-top: -80px;
+    }
+
+    .hero-contact::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/contact-header.jpg" %}') center/cover no-repeat;
+        opacity: 0.15;
+    }
+
+    .hero-contact h1 {
+        font-size: 2.8rem;
+        font-weight: 600;
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 1rem;
+        position: relative;
+        animation: fadeInDown 1s ease-in-out;
+    }
+
+    .hero-contact p {
+        font-size: 1.3rem;
+        color: rgba(201, 167, 105, 0.9);
+        max-width: 800px;
+        margin: 0 auto;
+        animation: fadeInUp 1s ease-in-out;
+        position: relative;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Title */
+    .section-title {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        margin: 60px 0 40px;
+        color: var(--primary-color);
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: var(--gold-color);
+        margin: 15px auto 0;
+    }
+
+    /* Contact Form Section */
+    .contact-section {
+        padding: 60px 0;
+        background-color: var(--light-gray);
+    }
+
+    .contact-form {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+    .contact-info {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/footer-pattern.png" %}') repeat;
+        opacity: 0.05;
+    }
+
+    .contact-info h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--gold-color);
+        margin-bottom: 25px;
+        font-size: 1.5rem;
+        position: relative;
+    }
+
+    .contact-info-item {
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .contact-info-item i {
+        color: var(--gold-color);
+        margin-right: 15px;
+        font-size: 1.2rem;
+        margin-top: 3px;
+    }
+
+    .contact-info-item h5 {
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+    }
+
+    .contact-info-item p {
+        color: rgba(255,255,255,0.8);
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: var(--primary-color);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .form-control:focus {
+        border-color: var(--gold-color);
+        box-shadow: 0 0 0 0.2rem rgba(201, 167, 105, 0.25);
+    }
+
+    textarea.form-control {
+        min-height: 180px;
+    }
+
+    .btn-send {
+        background-color: var(--gold-color);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-send:hover {
+        background-color: var(--gold-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(201, 167, 105, 0.3);
+    }
+
+    /* Login Required Section */
+    .login-required {
+        text-align: center;
+        padding: 50px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .login-required i {
+        font-size: 3.5rem;
+        color: var(--gold-color);
+        margin-bottom: 20px;
+    }
+
+    .login-required h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .login-required p {
+        color: var(--dark-gray);
+        margin-bottom: 25px;
+    }
+
+    .btn-login {
+        background: var(--gold-color);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-login i {
+        font-size: 1rem;
+        margin-right: 10px;
+        color: white;
+    }
+
+    .btn-login:hover {
+        background: var(--gold-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(201, 167, 105, 0.3);
+        color: white;
+    }
+
+    /* Minimal Footer */
+    .luxury-footer {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 40px 0 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .luxury-footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "hotel/footer-pattern.png" %}') repeat;
+        opacity: 0.05;
+    }
+
+    .footer-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .footer-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gold-color);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .footer-slogan {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+
+    .copyright {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.9rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .hero-contact h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-contact p {
+            font-size: 1.2rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-contact {
+            padding: 100px 0 60px;
+        }
+        
+        .hero-contact h1 {
+            font-size: 2.2rem;
+        }
+        
+        .contact-form, .contact-info {
+            padding: 30px;
+        }
+
+        .luxury-footer {
+            padding: 30px 0 15px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-contact h1 {
+            font-size: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .login-required {
+            padding: 30px 20px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+        }
+        
+        .footer-slogan {
+            font-size: 1rem;
+            padding: 0 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="hero-contact">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Contactez Hotelia</h1>
+            <p>Notre équipe est à votre disposition pour répondre à toutes vos questions</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        {% if user.is_authenticated %}
+            <div class="section-title">
+                <h2>Nous contacter</h2>
+                <p>Nous sommes là pour vous aider. N'hésitez pas à nous contacter pour toute question.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7 mb-4">
+                    <div class="contact-form">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">Nom complet</label>
+                                        <input type="text" class="form-control" id="name" name="name" 
+                                               value="{{ user_full_name }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                               value="{{ user_email }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Sujet</label>
+                                <select class="form-control" id="subject" name="subject" required>
+                                    {% for value, label in subject_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-send">
+                                <i class="fas fa-paper-plane me-2"></i>Envoyer le message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="contact-info">
+                        <h3>Informations de contact</h3>
+                        
+                        <div class="contact-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h5>Notre adresse</h5>
+                                <p>Casablanca, Maroc</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h5>Téléphone</h5>
+                                <p>+212 6 99 25 42 47</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h5>Email</h5>
+                                <p>hotelia@hotelia.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h5>Heures d'ouverture</h5>
+                                <p>Lundi - Vendredi: 9h00 - 18h00<br>
+                                   Samedi: 9h00 - 14h00<br>
+                                   Dimanche: Fermé</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="login-required">
+                <i class="fas fa-user-lock"></i>
+                <h3>Connexion requise</h3>
+                <p>Vous devez être connecté pour accéder au formulaire de contact.</p>
+                <a href="{% provider_login_url 'google' %}" class="btn-login">
+                    <i class="fab fa-google me-2"></i>Se connecter avec Google
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Luxury Footer -->
+<footer class="luxury-footer">
+    <div class="container">
+        <div class="footer-content">
+            <span class="footer-logo">Hotelia</span>
+            <p class="footer-slogan">Curating exceptional stays for those who appreciate the finer things in life.</p>
+            <p class="copyright">© 2025 Hotelia. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}

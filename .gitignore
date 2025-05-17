@@ -17,3 +17,13 @@ db.sqlite3
 # Dossiers de médias et statiques générés
 /media
 /staticfiles
+
+# Fichiers de migration de données
+*.json
+
+# Fichiers de logs
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
