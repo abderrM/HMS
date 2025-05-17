@@ -1,0 +1,237 @@
+/* Styles généraux */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+}
+
+/* En-tête */
+#header {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+#branding h1 {
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Menu latéral */
+#content-related {
+    background: var(--light-color) !important;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: var(--secondary-color) !important;
+    color: white !important;
+}
+
+/* Boutons */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--secondary-color) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: var(--primary-color) !important;
+}
+
+/* Tableaux */
+thead th {
+    background: var(--light-color) !important;
+    color: var(--dark-color) !important;
+}
+
+tr:nth-child(odd) {
+    background: #f8f9fa !important;
+}
+
+/* Formulaires */
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField {
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+}
+
+/* Messages */
+.success {
+    background: #d4edda !important;
+    color: #155724 !important;
+}
+
+.error {
+    background: #f8d7da !important;
+    color: #721c24 !important;
+}
+
+/* Dashboard */
+.dashboard #content {
+    background: white !important;
+}
+
+.dashboard .module {
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    background: white;
+}
+
+.dashboard-card .card-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Stats Cards */
+.stats-card {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #007bff, #00bcd4);
+    color: white;
+}
+
+.stats-card .stats-number {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.stats-card .stats-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Charts Container */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+/* Recent Actions */
+.recent-actions {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.recent-actions .action-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.recent-actions .action-item:last-child {
+    border-bottom: none;
+}
+
+/* Hotel Form */
+.hotel-form .form-group {
+    margin-bottom: 20px;
+}
+
+.hotel-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.hotel-form .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.hotel-form .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Image Preview */
+.image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #content {
+        padding: 10px !important;
+    }
+    
+    .dashboard .module {
+        margin-bottom: 20px !important;
+    }
+    
+    .dashboard-card {
+        margin-bottom: 15px;
+    }
+    
+    .stats-card {
+        margin-bottom: 15px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Animations */
+.button, .module, .stats-card {
+    transition: all 0.3s ease !important;
+}
+
+.button:hover {
+    transform: translateY(-2px) !important;
+}
+
+/* Personnalisation des onglets */
+.tab-content {
+    background: white !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Style des notifications */
+.messagelist li {
+    border-radius: 4px !important;
+    margin-bottom: 10px !important;
+    padding: 10px 15px !important;
+}
+
+/* Style des filtres */
+.selector {
+    background: white !important;
+    border-radius: 8px !important;
+    padding: 15px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Style des formulaires de recherche */
+.search-form {
+    background: white !important;
+    border-radius: 8px !important;
+    padding: 15px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+} 

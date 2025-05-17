@@ -1,0 +1,336 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "1",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ILnZ09thzu57JIdwc2Y1A2$5ukQeHLaoCEaZ6zugX4mtl03cjbZmZ3KV8mJJn4gbIg=",
+    "last_login": "2025-04-28T08:37:27.470Z",
+    "is_superuser": true,
+    "username": "1",
+    "first_name": "",
+    "last_name": "",
+    "email": "1@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-25T10:20:54.938Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$BImeCoLNC5WmZf57Gki3m7$u1bJFf8sa1sMeqL29ye5/6DR6L1wzrrhAMddwBug/E8=",
+    "last_login": "2025-04-30T10:32:12.472Z",
+    "is_superuser": true,
+    "username": "abdo",
+    "first_name": "",
+    "last_name": "",
+    "email": "abdo@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-30T10:14:32.929Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 12,
+  "fields": {
+    "password": "!cDArDln7L3tgzgtFpoVZ9waNjLK8C8OCQAWHgfmo",
+    "last_login": "2025-04-30T10:38:12.742Z",
+    "is_superuser": false,
+    "username": "abderrahmane",
+    "first_name": "Abderrahmane",
+    "last_name": "Meziani",
+    "email": "mezianiabderrahmane0@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-30T10:19:23.585Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5aeds29f7ijdtztlh3snqezfbsqzbrmf",
+  "fields": {
+    "session_data": ".eJxVj81uhDAMhN_FZ4TIT-OYW_c1qgqZJCyolFQk9IL23Rt26YGDJWv8zWi8Q4pu4pmdi9uSu5Q5hwTt_qjgX-Mtj2HJk-M8xaX7DnmMvjAfO7x2aK8pULwZWoHaNA1pkjVKSaqRFfys8XfyYS2We4z3ORR2m44EIbAhNFor-1YGrbJSwuOzgmeBbkth7V6khIvYs_sKy3HheT7k-uxRP5nznOr3yx-303WJGjmNJccNvrGakVhoPwzGDVbjoAWi6ZUn74IncoQkVbBGkGGD1jEp7Pvgdan9B1SvcQc:1uA4pQ:tyHMB6KgPVX2UiaVRT9Vi1TUBFqXnM87Lih4eRr19po",
+    "expire_date": "2025-05-14T10:38:12.750Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "amps59z4y7vi02hi04os9tl0y1tzxci2",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlle_2Io6XMGa71e4wBypDipEHeHSCmgfTPzXiLitta4dV7ilMVFAIjT75iQHtx2ku_YbrOkua3LlOSuyIN2Oc6Zn9fD_Tuo2Ou3tjwUozAUZ7QL4CEVjcGActqfHRJ6UorZOjsgUOZgCxhUVhFB9s6I9wfuLjeF:1uA4Si:95ysAKgWmaRe9KNBeYnY_Ph4fiRi99mXRC3GLbGrs14",
+    "expire_date": "2025-05-14T10:14:44.371Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g9kpg98ym8ua18ltbtigb2rh4nepoamc",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyHUFVw8evcbyLILUjU0Ke3J-O_SpAc9TTLvzbxVoHUpYW1pDqOoizqpw28XiZ-pbkAeVO-T5qku8xj1puidNn2bJL2uu_t3UKiVvmYg5MwADnsayMDGW4Gj9WmwDHI2DiMOJGS7IUkQTWbL6Dmjs-rzBfHfOFI:1u7si4:EA307ybVMv4hDAYoogvts-y9k6M1Dmkpaox6V7BHFO4",
+    "expire_date": "2025-05-08T09:17:32.832Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gs40ox4qxou68q4xtufmc7bemd8cr4ww",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-fyjpOYO1a69xADlSnFSIu0OkFNC-mXkvlmBbW9oGLWkq7MwkO_1uCPlBfQflDv028zz3dZmQ7wo_6ODXudDzcrh_Bw1G-9aRSvSWjLc2SIMmqOoEktdCagPOuYyhKgIVjLZVkgYhQlZQKHq0sbL3B8gXN4E:1qxHO2:CpthbD51z8xAwidy_9Y5MUXiK4Ol7qVpMmayYnKizkc",
+    "expire_date": "2023-11-13T01:48:14.317Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ij03dvlfuv3k549twg78evg40e6nr1k3",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWmgQ53WpXvO0ExnpoIaSCisjHdXEha6_e-9_zKJtnVIW9UljWIuJpjT75aJHzrtQO403WbL87QuY7a7Yg9abT-LPq-H-3cwUB2-tcu-FCJyLrSIjIIMnSdoFEUA284zgwYlDtJCVgoxQonB-XMDpYvm_QH7czgV:1u8Pdj:gvi7CEY90mixiRDgO5VwCR0ts-wyq_TJJQdlfMgh69Y",
+    "expire_date": "2025-05-09T20:27:15.120Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "krw55htjs8d7c2l0qugro9e6tzswj53g",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-fyjpOYO1a69xADlSnFSIu0OkFNC-mXkvlmBbW9oGLWkq7MwkO_1uCPlBfQflDv028zz3dZmQ7wo_6ODXudDzcrh_Bw1G-9aRSvSWjLc2SIMmqOoEktdCagPOuYyhKgIVjLZVkgYhQlZQKHq0sbL3B8gXN4E:1p8mH9:7HQ6HrhR4GusXwuDsY8rqhpfonnh1TciuMXJShBCnhw",
+    "expire_date": "2023-01-06T17:56:07.128Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "sw54xuds4vauprby5qqgqi9za4908wce",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-fyjpOYO1a69xADlSnFSIu0OkFNC-mXkvlmBbW9oGLWkq7MwkO_1uCPlBfQflDv028zz3dZmQ7wo_6ODXudDzcrh_Bw1G-9aRSvSWjLc2SIMmqOoEktdCagPOuYyhKgIVjLZVkgYhQlZQKHq0sbL3B8gXN4E:1qx2Ct:RURUn6L-6Ny7pOtvgbp0gH7B6rH1nCvYE9Icf5ygxNQ",
+    "expire_date": "2023-11-12T09:35:43.407Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tr7ldq4n5at2yi0a99wklknu6bkbbqd3",
+  "fields": {
+    "session_data": ".eJxVjEEOgjAQRe_StWmgQ53WpXvO0ExnpoIaSCisjHdXEha6_e-9_zKJtnVIW9UljWIuJpjT75aJHzrtQO403WbL87QuY7a7Yg9abT-LPq-H-3cwUB2-tcu-FCJyLrSIjIIMnSdoFEUA284zgwYlDtJCVgoxQonB-XMDpYvm_QH7czgV:1u9JzT:meGZIN5g7JXoe0eziS8hhLE7UhVYJD4fGGuB-I8DnYU",
+    "expire_date": "2025-05-12T08:37:27.477Z"
+  }
+},
+{
+  "model": "sites.site",
+  "pk": 1,
+  "fields": {
+    "domain": "example.com",
+    "name": "example.com"
+  }
+},
+{
+  "model": "sites.site",
+  "pk": 2,
+  "fields": {
+    "domain": "127.0.0.1:8080",
+    "name": "localhost"
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 2,
+  "fields": {
+    "user": 12,
+    "email": "mezianiabderrahmane0@gmail.com",
+    "verified": true,
+    "primary": true
+  }
+},
+{
+  "model": "socialaccount.socialaccount",
+  "pk": 2,
+  "fields": {
+    "user": 12,
+    "provider": "google",
+    "uid": "117097644385438783822",
+    "last_login": "2025-04-30T10:38:12.712Z",
+    "date_joined": "2025-04-30T10:19:23.605Z",
+    "extra_data": {
+      "iss": "https://accounts.google.com",
+      "azp": "864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com",
+      "aud": "864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com",
+      "sub": "117097644385438783822",
+      "email": "mezianiabderrahmane0@gmail.com",
+      "email_verified": true,
+      "at_hash": "W2hfno2rPkyjGTSdyETyeA",
+      "name": "Abderrahmane Meziani",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocJyQ3AhQZ2kW1CNOqBsRQv7VrfG3j8_0InujzRrN-pnZ0RhrIs=s96-c",
+      "given_name": "Abderrahmane",
+      "family_name": "Meziani",
+      "iat": 1746009490,
+      "exp": 1746013090
+    }
+  }
+},
+{
+  "model": "home.amenities",
+  "pk": "253d1b5c-f2fb-40d9-a04f-49d4c45ec629",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "amenity_name": "summer"
+  }
+},
+{
+  "model": "home.amenities",
+  "pk": "653cc728-cc11-43c3-a153-7c724728c09c",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "amenity_name": "winter"
+  }
+},
+{
+  "model": "home.hotel",
+  "pk": "09c9092b-ea56-4634-9fdb-d9818dde0a8e",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel_name": "hotel8",
+    "hotel_price": 200,
+    "description": "hotel6",
+    "room_count": 10,
+    "amenities": [
+      "253d1b5c-f2fb-40d9-a04f-49d4c45ec629",
+      "653cc728-cc11-43c3-a153-7c724728c09c"
+    ]
+  }
+},
+{
+  "model": "home.hotel",
+  "pk": "28eeb1b0-bbd7-4734-844d-ab55cc891d67",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel_name": "hotel6",
+    "hotel_price": 3000,
+    "description": "hotel6",
+    "room_count": 10,
+    "amenities": [
+      "253d1b5c-f2fb-40d9-a04f-49d4c45ec629",
+      "653cc728-cc11-43c3-a153-7c724728c09c"
+    ]
+  }
+},
+{
+  "model": "home.hotel",
+  "pk": "a758e36c-14d0-483c-a908-1567925802b2",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel_name": "hotel4",
+    "hotel_price": 399,
+    "description": "hotel4",
+    "room_count": 10,
+    "amenities": [
+      "253d1b5c-f2fb-40d9-a04f-49d4c45ec629",
+      "653cc728-cc11-43c3-a153-7c724728c09c"
+    ]
+  }
+},
+{
+  "model": "home.hotel",
+  "pk": "d64380d3-c4f4-4d40-abdf-9a71e10830f1",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel_name": "HOTEL1",
+    "hotel_price": 250,
+    "description": "hotel1",
+    "room_count": 3,
+    "amenities": [
+      "253d1b5c-f2fb-40d9-a04f-49d4c45ec629"
+    ]
+  }
+},
+{
+  "model": "home.hotel",
+  "pk": "e089c56f-135d-4e74-bf0d-53670319a71a",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel_name": "hotel3",
+    "hotel_price": 400,
+    "description": "hotel3",
+    "room_count": 10,
+    "amenities": [
+      "253d1b5c-f2fb-40d9-a04f-49d4c45ec629",
+      "653cc728-cc11-43c3-a153-7c724728c09c"
+    ]
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "07547764-b4cc-4c6f-8091-80f5cfcc913f",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "d64380d3-c4f4-4d40-abdf-9a71e10830f1",
+    "images": "hotels/hotel_1_SDmlO8J.jpg"
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "30707666-0f5c-48a2-a921-c88a49d42c87",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "28eeb1b0-bbd7-4734-844d-ab55cc891d67",
+    "images": "hotels/_Stay_in_a_Royal_Suite_at_Palace_Downtown.jpeg"
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "5b1dc80d-5553-4dd7-b3e3-27cad4084d44",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "09c9092b-ea56-4634-9fdb-d9818dde0a8e",
+    "images": "hotels/_Stay_in_a_Royal_Suite_at_Palace_Downtown_6lm2BAL.jpeg"
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "87f31d45-954e-4ce3-b7df-69f16d009443",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "28eeb1b0-bbd7-4734-844d-ab55cc891d67",
+    "images": "hotels/Tropical_Retreats_21_Resort_Design_Ideas_for_a_Dreamy_Getaway.jpeg"
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "a80cd437-9549-4f85-a8d3-596b297fff33",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "e089c56f-135d-4e74-bf0d-53670319a71a",
+    "images": "hotels/pexels-thorsten-technoman-338504_60PIzre_3dIqGlF.jpg"
+  }
+},
+{
+  "model": "home.hotelimages",
+  "pk": "bb95e19e-1633-4153-8643-17fa0e90283c",
+  "fields": {
+    "created_at": "2025-04-27",
+    "updated_at": "2025-04-27",
+    "hotel": "a758e36c-14d0-483c-a908-1567925802b2",
+    "images": "hotels/hotel_5_ItPip8U.jpg"
+  }
+}
