@@ -290,8 +290,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
             'key': ''
         },
         'SCOPE': [
@@ -322,15 +322,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mezianiabderrahmane0@gmail.com'
-EMAIL_HOST_PASSWORD = 'yisiaghxwiknanim'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # Payment Settings
-PAYPAL_CLIENT_ID = 'AVbJ7SDAJSmFkwhu3RpgPEiVnjYbfJdT9kIJ7FalLZ_NpIF1_fIyQAg0ECayaK6vPFzx1x4kH_Q8u5uT'
-PAYPAL_CLIENT_SECRET = 'EOD8eunyVTjcnsA7vIIQBA_JBDw1Y7iCg2gFLOZvHu7kpL8pl7xT3LqiymYGtuj7_ugRc7EJzw6rtrxA'
-STRIPE_PUBLIC_KEY = 'pk_test_51RJdc7QLTN0bXdULJvT928OiDCPMxHgI3ARcSkzkjQ5kt7Zm6uZgGNQgydSakUfwNRZmi0dypJCjzVVpUMs8jOTL00AGVT7DgL'
-STRIPE_SECRET_KEY = 'sk_test_51RJdc7QLTN0bXdULJpZWFYClVVrG0ATE7YpIPer9S7pmYekMOXfyP4BH33BULZ6ZXe3tIn1eZzSuJmUc3RMKJS4G00Ddz0sv2G'
-STRIPE_WEBHOOK_SECRET = 'whsec_votrecléwebhook'
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET')
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 
 # Currency configuration
 STRIPE_CURRENCY = 'eur'  # or 'usd' depending on your preference
@@ -338,7 +338,3 @@ STRIPE_CURRENCY = 'eur'  # or 'usd' depending on your preference
 # Configuration de allauth (mise à jour)
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*','password2*']
-
-# Google client settings
-GOOGLE_CLIENT_ID = '864336734735-4rd122dlufqnvu22angfjadavkv10nkr.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = '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'

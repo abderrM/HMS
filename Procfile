@@ -1,1 +1,1 @@
-web: gunicorn hotelProject.wsgi
+"web: gunicorn hotelProject.wsgi" 
